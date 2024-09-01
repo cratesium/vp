@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Video Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .video-container {
+            width: 80%;
+            max-width: 800px;
+            background: #000;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .controls button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .controls button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .controls input[type="range"] {
+            flex: 1;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <video id="videoPlayer" src="/demo.mov"></video>
+        <div class="controls">
+            <button id="pauseButton">Pause</button>
+            <button id="playButton">Play</button>
+            <input type="range" id="seekBar" value="0" step="1">
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('videoPlayer');
+        const playButton = document.getElementById('playButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const seekBar = document.getElementById('seekBar');
+
+        // Update the seek bar as the video plays
+        video.addEventListener('timeupdate', () => {
+            seekBar.value = (video.currentTime / video.duration) * 100;
+        });
+
+        // Seek to a specific time when the seek bar is changed
+        seekBar.addEventListener('input', () => {
+            video.currentTime = (seekBar.value / 100) * video.duration;
+        });
+
+        // Play the video
+        playButton.addEventListener('click', () => {
+            video.play();
+            playButton.disabled = true;
+            pauseButton.disabled = false;
+        });
+
+        // Pause the video
+        pauseButton.addEventListener('click', () => {
+            video.pause();
+            playButton.disabled = false;
+            pauseButton.disabled = true;
+        });
+
+        // Initialize button states
+        pauseButton.disabled = true;
+    </script>
+</body>
+</html>
